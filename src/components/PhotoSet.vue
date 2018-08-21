@@ -37,7 +37,7 @@ export default {
         params: {
           method: 'flickr.photosets.getPhotos',
           photoset_id: this.$route.params.id,
-          extras: 'url_m'
+          extras: 'url_m,media'
         }
       })
       .then(response => {

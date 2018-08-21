@@ -1,39 +1,57 @@
 <template>
   <div class='container'>
-    <img :src="url" />
+    <img v-if="this.type === 'photo'" :src="url" class="media" />
+    <video v-else :src="url" controls preload class="media" />
   </div>
 </template>
 
 <script>
 import axios from 'axios'
 
-let createPhotoUrl = (photo) => `https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_c.jpg`
+let find = (arr, label) => {
+  for (var i=0; i < arr.length; i++) {
+    if (arr[i].label === label) {
+      return arr[i]
+    }
+  }
+  return null
+}
 
 export default {
   name: 'SinglePage',
   data () {
     return {
-      url: null
+      url: null,
+      type: null
     }
   },
   mounted () {
     axios
       .get('/service/rest', {
         params: {
-          method: 'flickr.photos.getInfo',
+          method: 'flickr.photos.getSizes',
           photo_id: this.$route.params.id
         }
       })
       .then(response => {
-        var photo = response.data.photo
-        this.url = createPhotoUrl(photo)
+        var sizeArray = response.data.sizes.size
+        console.log(sizeArray)
+        let video = find(sizeArray, 'HD MP4')
+        if (video) {
+          this.url = video.source
+          this.type = 'video'
+        } else {
+          let photo = find(sizeArray, 'Large')
+          this.url = photo.source
+          this.type = 'photo'
+        }
       })
   }
 }
 </script>
 
 <style scoped>
-img {
+.media {
   width: 100%;
   height: 100%;
   object-fit: contain;
