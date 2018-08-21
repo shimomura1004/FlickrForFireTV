@@ -62,14 +62,14 @@ figure {
 
 figcaption {
   position: absolute;
-	left: 0px;
-	bottom: 0.5em;
-	color: #fff;
-	margin: 0px;
-	padding: 5px 0 5px 3%;
-	width: 97%;
-	background: #000;
-	filter: Alpha(opacity=70);
-	opacity: 0.7;
+  left: 0px;
+  bottom: 0.5em;
+  color: #fff;
+  margin: 0px;
+  padding: 5px 0 5px 3%;
+  width: 97%;
+  background: #000;
+  filter: Alpha(opacity=70);
+  opacity: 0.7;
 }
 </style>

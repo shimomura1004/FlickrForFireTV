@@ -24,7 +24,7 @@ let createThumbnailUrlList = (photoset) => {
 }
 
 export default {
-  name: 'HelloWorld',
+  name: 'PhotoSet',
   data () {
     return {
       title: null,

@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import VueLazyload from 'vue-lazyload'
 import PhotoStream from '@/components/PhotoStream'
-import HelloWorld from '@/components/HelloWorld'
+import PhotoSet from '@/components/PhotoSet'
 import SinglePage from '@/components/SinglePage'
 
 Vue.use(Router)
@@ -20,8 +20,8 @@ export default new Router({
     },
     {
       path: '/photoset/:id',
-      name: 'HelloWorld',
-      component: HelloWorld
+      name: 'PhotoSet',
+      component: PhotoSet
     },
     {
       path: '/photo/:id',
