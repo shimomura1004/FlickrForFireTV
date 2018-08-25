@@ -1,15 +1,17 @@
 <template>
   <div class='container'>
     <img v-if="this.type === 'photo'" :src="url" class="media" />
-    <video v-else :src="url" controls preload class="media" />
+    <video v-else :src="url" controls preload autoplay class="media" />
   </div>
 </template>
 
 <script>
+// todo: add next/prev buttons
+
 import axios from 'axios'
 
 let find = (arr, label) => {
-  for (var i=0; i < arr.length; i++) {
+  for (var i = 0; i < arr.length; i++) {
     if (arr[i].label === label) {
       return arr[i]
     }
@@ -34,8 +36,8 @@ export default {
         }
       })
       .then(response => {
+        // todo: remove hard coded photo size
         var sizeArray = response.data.sizes.size
-        console.log(sizeArray)
         let video = find(sizeArray, 'HD MP4')
         if (video) {
           this.url = video.source

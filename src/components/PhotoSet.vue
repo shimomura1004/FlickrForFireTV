@@ -2,9 +2,12 @@
   <div>
     <h1>{{title}}</h1>
     <div class='layout'>
-      <div v-for="photo in photoset" :key="photo.id">
-        <router-link :to="'/photo/' + photo.id">
-          <img v-lazy="photo.url" />
+      <div v-for="photo in photoset" :key="photo.id" class="aaa">
+        <router-link class="photolink" :to="'/photo/' + photo.id">
+          <img v-lazy="photo.url_m" />
+          <div v-if="photo.media === 'video'" class="hoge">
+            <img src="../assets/play_icon.png" />
+          </div>
         </router-link>
       </div>
     </div>
@@ -12,19 +15,14 @@
 </template>
 
 <script>
+// todo: display video player mark
+
 import axios from 'axios'
-
-// todo: use preventDefault to trap input from remote controller
-
-let createThumbnailUrlList = (photoset) => {
-  return photoset.photo.map(photo => ({
-    id: photo.id,
-    url: photo.url_m
-  }))
-}
+import KeyInputMixin from '@/components/KeyInputMixin'
 
 export default {
   name: 'PhotoSet',
+  mixins: [KeyInputMixin],
   data () {
     return {
       title: null,
@@ -41,8 +39,9 @@ export default {
         }
       })
       .then(response => {
-        this.photoset = createThumbnailUrlList(response.data.photoset)
+        this.photoset = response.data.photoset.photo
         this.title = response.data.photoset.title
+        this.addKeyEventHandlers('.photolink')
       })
   }
 }
@@ -61,9 +60,19 @@ h1, h2 {
   grid-column-gap: 10px;
 }
 
+.aaa {
+  position: relative;
+}
+
 img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.hoge {
+  position: absolute;
+  top: 0px;
+  left: 0px;
 }
 </style>

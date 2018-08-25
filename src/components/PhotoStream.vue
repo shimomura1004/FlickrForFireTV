@@ -2,7 +2,7 @@
   <div>
     <div class='layout'>
       <div v-for="album in albums" :key="album.id">
-        <router-link :to="'/photoset/' + album.id">
+        <router-link class="photolink" :to="'/photoset/' + album.id">
           <figure>
             <img v-lazy="album.primary_photo_extras.url_m" />
             <figcaption>{{album.title._content}}</figcaption>
@@ -14,6 +14,8 @@
 </template>
 
 <script>
+// todo: display number of pics/videos
+
 import axios from 'axios'
 
 export default {
