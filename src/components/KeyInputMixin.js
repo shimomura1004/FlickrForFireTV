@@ -2,7 +2,7 @@ export default {
   created () {
   },
   methods: {
-    addKeyEventHandlers (query) {
+    keyDownHandler (e) {
       // todo: control with d-pads of the remote
 
       const LEFT_KEY = 37
@@ -10,33 +10,35 @@ export default {
       const RIGHT_KEY = 39
       const PREV_KEY = 227
 
-      let index = 0
-
-      window.addEventListener('mousedown', (e) => {
-        e.stopPropagation()
-        e.preventDefault()
-
-        let targets = document.querySelectorAll(query)
-        this.$router.push(targets[index].href.split('#')[1])
-      }, true)
-
-      window.addEventListener('keydown', (e) => {
-        let targets = document.querySelectorAll(query)
-        switch (e.keyCode) {
-          case LEFT_KEY:
-          case PREV_KEY:
-            index = (index - 1 + targets.length) % targets.length
-            targets[index].focus()
-            break
-          case RIGHT_KEY:
-          case NEXT_KEY:
-            index = (index + 1) % targets.length
-            targets[index].focus()
-            break
-          default:
-            break
-        }
-      })
+      switch (e.keyCode) {
+        case LEFT_KEY:
+        case PREV_KEY:
+          if (this.onLeftPressed) {
+            this.onLeftPressed(e)
+          }
+          break
+        case RIGHT_KEY:
+        case NEXT_KEY:
+          if (this.onRightPressed) {
+            this.onRightPressed(e)
+          }
+          break
+        default:
+          break
+      }
+    },
+    mouseDownHandler (e) {
+      if (this.onMouseDown) {
+        this.onMouseDown(e)
+      }
+    },
+    addEventHandlers () {
+      window.addEventListener('mousedown', this.mouseDownHandler)
+      window.addEventListener('keydown', this.keyDownHandler)
+    },
+    removeEventHandlers () {
+      window.removeEventListener('mousedown', this.mouseDownHandler)
+      window.removeEventListener('keydown', this.keyDownHandler)
     }
   }
 }

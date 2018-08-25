@@ -19,12 +19,12 @@ export default new Router({
       component: PhotoStream
     },
     {
-      path: '/photoset/:id',
+      path: '/photoset/:photoset_id',
       name: 'PhotoSet',
       component: PhotoSet
     },
     {
-      path: '/photo/:id',
+      path: '/photo/:photoset_id/:photo_id',
       name: 'SinglePage',
       component: SinglePage
     }
