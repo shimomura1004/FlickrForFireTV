@@ -33,6 +33,7 @@ export default {
     }
   },
   mounted () {
+    this.index = parseInt(this.$route.params.index) || 0
     this.addEventHandlers()
 
     axios
@@ -51,6 +52,9 @@ export default {
   },
   updated () {
     this.photolinks = document.querySelectorAll('.photolink')
+    setTimeout(() => {
+      this.photolinks[this.index].focus()
+    }, 1000)
   },
   methods: {
     onMouseDown (e) {
@@ -68,6 +72,7 @@ export default {
         this.index = (this.index - 1 + this.photolinks.length) % this.photolinks.length
       }
       this.photolinks[this.index].focus()
+      this.$router.replace(`/${this.index}`)
     },
     onRightPressed (e) {
       e.stopPropagation()
@@ -79,6 +84,7 @@ export default {
         this.index = (this.index + 1) % this.photolinks.length
       }
       this.photolinks[this.index].focus()
+      this.$router.replace(`/${this.index}`)
     }
   }
 }

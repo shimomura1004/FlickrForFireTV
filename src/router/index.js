@@ -14,12 +14,12 @@ Vue.use(VueLazyload)
 export default new Router({
   routes: [
     {
-      path: '/',
+      path: '/:index?',
       name: 'PhotoStream',
       component: PhotoStream
     },
     {
-      path: '/photoset/:photoset_id',
+      path: '/photoset/:photoset_id/:index?',
       name: 'PhotoSet',
       component: PhotoSet
     },
