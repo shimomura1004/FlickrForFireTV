@@ -6,8 +6,11 @@
 </template>
 
 <script>
-import axios from 'axios'
+// todo: when user change the pic of id 123 in SinglePage,
+//       back to /(phtoset)/123
+
 import KeyInputMixin from '@/components/KeyInputMixin'
+import FlickrAPI from '@/components/FlickrAPI'
 
 let find = (arr, label) => {
   for (var i = 0; i < arr.length; i++) {
@@ -20,7 +23,7 @@ let find = (arr, label) => {
 
 export default {
   name: 'SinglePage',
-  mixins: [KeyInputMixin],
+  mixins: [KeyInputMixin, FlickrAPI],
   data () {
     return {
       url: null,
@@ -42,39 +45,31 @@ export default {
   },
   methods: {
     load (photosetId, photoId) {
-      axios
-        .get('/service/rest', {
-          params: {
-            method: 'flickr.photos.getSizes',
-            photo_id: photoId
-          }
-        })
-        .then(response => {
-          // todo: remove hard coded photo size
-          var sizeArray = response.data.sizes.size
-          let video = find(sizeArray, 'HD MP4')
-          if (video) {
-            this.url = video.source
-            this.type = 'video'
-          } else {
-            let photo = find(sizeArray, 'Large')
-            this.url = photo.source
-            this.type = 'photo'
-          }
-        })
+      this.getRequest({
+        method: 'flickr.photos.getSizes',
+        photo_id: photoId
+      }).then(response => {
+        // todo: remove hard coded photo size
+        var sizeArray = response.data.sizes.size
+        let video = find(sizeArray, 'HD MP4')
+        if (video) {
+          this.url = video.source
+          this.type = 'video'
+        } else {
+          let photo = find(sizeArray, 'Large')
+          this.url = photo.source
+          this.type = 'photo'
+        }
+      })
 
-      axios
-        .get('/service/rest', {
-          params: {
-            method: 'flickr.photosets.getContext',
-            photo_id: photoId,
-            photoset_id: photosetId
-          }
-        })
-        .then(response => {
-          this.nextPhotoId = response.data.nextphoto.id
-          this.prevPhotoId = response.data.prevphoto.id
-        })
+      this.getRequest({
+        method: 'flickr.photosets.getContext',
+        photo_id: photoId,
+        photoset_id: photosetId
+      }).then(response => {
+        this.nextPhotoId = response.data.nextphoto.id
+        this.prevPhotoId = response.data.prevphoto.id
+      })
     },
     onLeftPressed () {
       if (this.prevPhotoId !== 0) {

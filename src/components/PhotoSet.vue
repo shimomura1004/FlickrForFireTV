@@ -17,12 +17,12 @@
 <script>
 // todo: support page nation
 
-import axios from 'axios'
 import KeyInputMixin from '@/components/KeyInputMixin'
+import FlickrAPI from '@/components/FlickrAPI'
 
 export default {
   name: 'PhotoSet',
-  mixins: [KeyInputMixin],
+  mixins: [KeyInputMixin, FlickrAPI],
   data () {
     return {
       title: null,
@@ -36,19 +36,15 @@ export default {
     this.index = parseInt(this.$route.params.index) || 0
     this.addEventHandlers()
 
-    axios
-      .get('/service/rest', {
-        params: {
-          method: 'flickr.photosets.getPhotos',
-          photoset_id: this.$route.params.photoset_id,
-          extras: 'url_m,media'
-        }
-      })
-      .then(response => {
-        this.photoset = response.data.photoset.photo
-        this.title = response.data.photoset.title
-        this.photosetId = this.$route.params.photoset_id
-      })
+    this.getRequest({
+      method: 'flickr.photosets.getPhotos',
+      photoset_id: this.$route.params.photoset_id,
+      extras: 'url_m,media'
+    }).then(response => {
+      this.photoset = response.data.photoset.photo
+      this.title = response.data.photoset.title
+      this.photosetId = this.$route.params.photoset_id
+    })
   },
   destroyed () {
     this.removeEventHandlers()

@@ -18,13 +18,6 @@ const FLICKR_REST_API_URL = 'https://api.flickr.com/services/rest/'
 var app = express()
 app.use(cookieParser())
 
-// for CORS
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*')
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
-  next()
-})
-
 var oauth = OAuth({
   consumer: {
     key: appKey,

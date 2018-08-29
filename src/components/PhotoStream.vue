@@ -17,14 +17,12 @@
 </template>
 
 <script>
-// todo: display number of pics/videos
-
-import axios from 'axios'
 import KeyInputMixin from '@/components/KeyInputMixin'
+import FlickrAPI from '@/components/FlickrAPI'
 
 export default {
   name: 'PhotoStream',
-  mixins: [KeyInputMixin],
+  mixins: [KeyInputMixin, FlickrAPI],
   data () {
     return {
       albums: [],
@@ -36,16 +34,12 @@ export default {
     this.index = parseInt(this.$route.params.index) || 0
     this.addEventHandlers()
 
-    axios
-      .get('/service/rest', {
-        params: {
-          method: 'flickr.photosets.getList',
-          primary_photo_extras: 'url_m'
-        }
-      })
-      .then(response => {
-        this.albums = response.data.photosets.photoset
-      })
+    this.getRequest({
+      method: 'flickr.photosets.getList',
+      primary_photo_extras: 'url_m'
+    }).then(response => {
+      this.albums = response.data.photosets.photoset
+    })
   },
   destroyed () {
     this.removeEventHandlers()
