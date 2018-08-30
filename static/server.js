@@ -8,7 +8,7 @@ var qs = require('qs')
 
 const appKey = process.env.APP_KEY
 const appSecret = process.env.APP_SECRET
-const PORT = 8081
+const PORT = process.env.PORT || 8081
 
 const REQUEST_TOKEN_URL = 'http://www.flickr.com/services/oauth/request_token'
 const AUTHORIZE_URL = 'http://www.flickr.com/services/oauth/authorize'
@@ -117,6 +117,6 @@ app.get('/auth', (req, res) => {
   }
 })
 
-app.use(express.static('dist'))
+app.use(express.static(process.env.DIST_DIR))
 
 app.listen(PORT)
